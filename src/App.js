@@ -1,11 +1,17 @@
 import React from 'react';
-import Button from 'react-bootstrap/Button';
+import { Route } from 'react-router-dom';
+import { Container } from 'reactstrap'
+import { Home, Login } from './pages'
+import { Navigation } from './components'
 
 function App() {
   return (
-    <div className='App'>
-      <h1>Hello World</h1>
-      <Button variant='info'>Danger</Button>
+    <div >
+      <Navigation></Navigation>
+      <Container>
+        <Route path="/" component={Home} exact />
+        <Route path="/login" component={Login} exact />
+      </Container>
     </div>
   );
 }
