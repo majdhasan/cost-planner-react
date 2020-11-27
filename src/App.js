@@ -1,7 +1,7 @@
 import React from 'react';
 import { Route } from 'react-router-dom';
 import { Container } from 'reactstrap'
-import { Home, Login } from './pages'
+import { Home, Login, Signup } from './pages'
 import { Navigation } from './components'
 
 function App() {
@@ -11,6 +11,7 @@ function App() {
       <Container>
         <Route path="/" component={Home} exact />
         <Route path="/login" component={Login} exact />
+        <Route path="/signup" component={Signup} exact />
       </Container>
     </div>
   );

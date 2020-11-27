@@ -24,9 +24,6 @@ const Navigation = (props) => {
                         <NavItem>
                             <NavLink href="/login/">Login</NavLink>
                         </NavItem>
-                        <NavItem>
-                            <NavLink href="/signup">Signup</NavLink>
-                        </NavItem>
                     </Nav>
                 </Collapse>
             </Navbar>

@@ -3,29 +3,37 @@ import { FormGroup, Button, Input, FormFeedback } from 'reactstrap'
 import { Formik } from 'formik'
 import * as Yup from 'yup';
 import { Link } from "react-router-dom"
-import { connect } from 'react-redux'
 
-import { signIn } from '../actions'
-
-class LoginPage extends Component {
-    
+class Signup extends Component {
     _handleFormSubmit(values) {
-        this.props.signIn(values)
+        console.log(values)
     }
     render() {
         return (
             <div style={{ padding: "20px" }}>
-                <h3>Login to your account</h3>
+                <h3>Create your account</h3>
                 <hr />
                 <Formik
-                    initialValues={{ email: "", password: "" }}
+                    initialValues={{ name: "", email: "", password: "" }}
                     onSubmit={this._handleFormSubmit.bind(this)}
                     validationSchema={Yup.object().shape({
+                        name: Yup.string().required(),
                         email: Yup.string().email().required(),
-                        password: Yup.string().min(6).required("this field is required")
+                        password: Yup.string().min(6).required()
                     })}
                     render={({ handleChange, handleSubmit, handleBlur, isValid, isSubmit, errors, touched }) => (
                         <div>
+                            <FormGroup>
+                                <Input
+                                    invalid={errors.name && touched.name}
+                                    name="name"
+                                    onChange={handleChange}
+                                    placeholder="Your Name"
+                                    onBlur={handleBlur}
+                                ></Input>
+
+                                {(errors.name && touched.name) && <FormFeedback>{errors.name}</FormFeedback>}
+                            </FormGroup>
                             <FormGroup>
                                 <Input
                                     invalid={errors.email && touched.email}
@@ -50,19 +58,10 @@ class LoginPage extends Component {
                             <Button onClick={handleSubmit} color="primary" block>Sign in</Button></div>
                     )}
                 />
-                <Link to="/signup">No account? Sign up here</Link >
+                <Link to="/login">Do you have an account? Login here</Link >
             </div>
         )
     }
 }
 
-const mapStateToProps = ({ auth }) => {
-    return {
-        attempting: auth.attempting,
-        error: auth.error
-    };
-};
-
-const Login = connect(mapStateToProps, { signIn })(LoginPage)
-
-export { Login }
+export { Signup }
