@@ -1,18 +1,53 @@
 import React, { Component } from 'react'
-import { FormGroup, Button, Input, FormFeedback } from 'reactstrap'
+import { FormGroup, Button, Input, FormFeedback, Alert } from 'reactstrap'
 import { Formik } from 'formik'
 import * as Yup from 'yup';
 import { Link } from "react-router-dom"
+import { connect } from 'react-redux'
 
-class Signup extends Component {
-    _handleFormSubmit(values) {
-        console.log(values)
+import { signUp } from '../actions'
+
+
+class SignupPage extends Component {
+
+    componentDidUpdate() {
+        const { error, isCreated } = this.props;
+        if (error && this.bag) {
+            this.bag.setSubmitting(false)
+        }
+        if (isCreated) {
+            setTimeout(() => {
+                this.props.history.push("/login")
+            }, 5000);
+
+
+        }
     }
+
+    _handleFormSubmit(values, bag) {
+        this.props.signUp(values);
+        this.bag = bag;
+        this.bag.setSubmitting(false);
+    }
+
+    _renderErrorIfAny() {
+        const { error } = this.props;
+        if (error) {
+            return (
+                <Alert color="danger">
+                    {error}
+                </Alert>
+            )
+        }
+    }
+
     render() {
         return (
             <div style={{ padding: "20px" }}>
                 <h3>Create your account</h3>
                 <hr />
+                {this._renderErrorIfAny()}
+                {this.props.isCreated && <Alert color="success">Your account has successfuly been created, you will be redirected to the login page in 5 seconds...</Alert>}
                 <Formik
                     initialValues={{ name: "", email: "", password: "" }}
                     onSubmit={this._handleFormSubmit.bind(this)}
@@ -55,7 +90,7 @@ class Signup extends Component {
                                     placeholder="Your Password"></Input>
                                 {(errors.password && touched.password) && <FormFeedback>{errors.password}</FormFeedback>}
                             </FormGroup>
-                            <Button disabled={!isValid || isSubmitting} onClick={handleSubmit} color="primary" block>Sign in</Button></div>
+                            <Button disabled={!isValid || isSubmitting} onClick={handleSubmit} color="primary" block>Sign up</Button></div>
                     )}
                 />
                 <Link to="/login">Do you have an account? Login here</Link >
@@ -63,5 +98,16 @@ class Signup extends Component {
         )
     }
 }
+
+
+const mapStateToProps = ({ signup }) => {
+    return {
+        attempting: signup.attempting,
+        error: signup.error,
+        isCreated: signup.isCreated
+    };
+};
+
+const Signup = connect(mapStateToProps, { signUp })(SignupPage)
 
 export { Signup }
