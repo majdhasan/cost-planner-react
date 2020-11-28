@@ -31,6 +31,7 @@ class LoginPage extends Component {
             )
         }
     }
+    
     render() {
         return (
             <div style={{ padding: "20px" }}>

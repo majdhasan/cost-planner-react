@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { logUserOut } from '../actions'
 import {
     Collapse,
     Navbar,
@@ -9,26 +11,61 @@ import {
     NavLink,
 } from 'reactstrap';
 
-const Navigation = (props) => {
-    const [isOpen, setIsOpen] = useState(false);
+class NavigationComponent extends Component {
 
-    const toggle = () => setIsOpen(!isOpen);
+    constructor(props) {
+        super(props)
 
-    return (
-        <div>
-            <Navbar color="dark" dark expand="md">
-                <NavbarBrand href="/">Cost Planner</NavbarBrand>
-                <NavbarToggler onClick={toggle} />
-                <Collapse isOpen={isOpen} navbar>
-                    <Nav className="ml-auto" navbar>
-                        <NavItem>
-                            <NavLink href="/login/">Login</NavLink>
-                        </NavItem>
-                    </Nav>
-                </Collapse>
-            </Navbar>
-        </div>
-    );
+        this.toggle = this.toggle.bind(this);
+        this.state = {
+            isOpen: false,
+        }
+    }
+
+    toggle() {
+        this.setState({
+            isOpen: !this.state.isOpen
+        })
+    }
+
+    _renderLoginOrLogout() {
+        const { isAuth, logUserOut } = this.props;
+        if (isAuth) {
+            return (
+                <NavItem>
+                    <NavLink onClick={()=>(logUserOut())}>Logout</NavLink>
+                </NavItem>
+            )
+        } else {
+            return (
+                <NavItem>
+                    <NavLink href="/login/">Login</NavLink>
+                </NavItem>
+            )
+        }
+    }
+
+    render() {
+        return (
+            <div>
+                <Navbar color="dark" dark expand="md">
+                    <NavbarBrand href="/">Cost Planner</NavbarBrand>
+                    <NavbarToggler onClick={this.toggle} />
+                    <Collapse isOpen={this.state.isOpen} navbar>
+                        <Nav className="ml-auto" navbar>
+                            {this._renderLoginOrLogout()}
+                        </Nav>
+                    </Collapse>
+                </Navbar>
+            </div>
+        );
+    }
 }
+const mapStateToProps = ({ auth }) => {
+    return {
+        isAuth: auth.isAuth
+    };
+};
 
+const Navigation = connect(mapStateToProps, {logUserOut})(NavigationComponent)
 export { Navigation };
