@@ -10,8 +10,9 @@ import { signIn } from '../actions'
 class LoginPage extends Component {
 
     componentDidUpdate() {
-        const { error } = this.props;
-        if (error) this.bag.setSubmitting(false)
+        const { error, isAuth } = this.props;
+        if (error && this.bag) this.bag.setSubmitting(false)
+        if (isAuth) this.props.history.push("/")
     }
 
     _handleFormSubmit(values, bag) {
@@ -25,7 +26,7 @@ class LoginPage extends Component {
         if (error) {
             return (
                 <Alert color="danger">
-                    Credintaials are wrong, please try again
+                    {error}
                 </Alert>
             )
         }
@@ -80,7 +81,8 @@ class LoginPage extends Component {
 const mapStateToProps = ({ auth }) => {
     return {
         attempting: auth.attempting,
-        error: auth.error
+        error: auth.error,
+        isAuth: auth.isAuth
     };
 };
 
