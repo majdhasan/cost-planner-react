@@ -21,7 +21,7 @@ class Signup extends Component {
                         email: Yup.string().email().required(),
                         password: Yup.string().min(6).required()
                     })}
-                    render={({ handleChange, handleSubmit, handleBlur, isValid, isSubmit, errors, touched }) => (
+                    render={({ handleChange, handleSubmit, handleBlur, isValid, isSubmitting, errors, touched }) => (
                         <div>
                             <FormGroup>
                                 <Input
@@ -55,7 +55,7 @@ class Signup extends Component {
                                     placeholder="Your Password"></Input>
                                 {(errors.password && touched.password) && <FormFeedback>{errors.password}</FormFeedback>}
                             </FormGroup>
-                            <Button onClick={handleSubmit} color="primary" block>Sign in</Button></div>
+                            <Button disabled={!isValid || isSubmitting} onClick={handleSubmit} color="primary" block>Sign in</Button></div>
                     )}
                 />
                 <Link to="/login">Do you have an account? Login here</Link >

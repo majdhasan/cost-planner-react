@@ -4,10 +4,19 @@ import axios from 'axios'
 export const signIn = reqData => {
     return async dispatch => {
         try {
-            const { data } = await axios.post("http://localhost:5000/api/v1/auth", reqData)
-            console.log(data);
+            const { data : {token} } = await axios.post("/api/v1/auth", reqData)
+            dispatch(success(token))
         } catch (e) {
-            console.log(e.response.data);
+            dispatch(error(e.response.data))
         }
     }
+}
+
+const success = (token) => {
+    localStorage.setItem("token", token)
+    return { type: AUTH_SUCCESS }
+}
+
+const error = (error) => {
+    return { type: AUTH_FAILED, payload: error }
 }
