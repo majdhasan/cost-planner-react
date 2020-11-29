@@ -29,12 +29,17 @@ class NavigationComponent extends Component {
     }
 
     _renderLoginOrLogout() {
-        const { isAuth, logUserOut } = this.props;
+        const { isAuth, logUserOut, profile } = this.props;
         if (isAuth) {
             return (
-                <NavItem>
-                    <NavLink onClick={()=>(logUserOut())}>Logout</NavLink>
-                </NavItem>
+                <div>
+                    <NavItem>
+                        <NavLink>Welcome, {profile.name}</NavLink>
+                    </NavItem>
+                    <NavItem>
+                        <NavLink onClick={() => (logUserOut())}>Logout</NavLink>
+                    </NavItem>
+                </div>
             )
         } else {
             return (
@@ -46,6 +51,7 @@ class NavigationComponent extends Component {
     }
 
     render() {
+        const { profile } = this.props;
         return (
             <div>
                 <Navbar color="dark" dark expand="md">
@@ -63,9 +69,10 @@ class NavigationComponent extends Component {
 }
 const mapStateToProps = ({ auth }) => {
     return {
-        isAuth: auth.isAuth
+        isAuth: auth.isAuth,
+        profile: auth.profile
     };
 };
 
-const Navigation = connect(mapStateToProps, {logUserOut})(NavigationComponent)
+const Navigation = connect(mapStateToProps, { logUserOut })(NavigationComponent)
 export { Navigation };
