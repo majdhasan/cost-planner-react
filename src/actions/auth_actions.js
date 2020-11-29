@@ -1,6 +1,5 @@
 import { AUTH_FAILED, AUTH_SUCCESS, AUTH_ATTEMPTING, USER_LOGGED_OUT, PROFILE_FETCHED } from './types'
 import { apiLogin, getProfile } from '../api/user'
-import authHeader from '../api/setAuthHeader'
 import setAuthHeader from '../api/setAuthHeader'
 const TOKEN_NAME = "cost_planner_token"
 
@@ -27,6 +26,7 @@ export const onLoadingSignin = () => {
                 return dispatch(error('You need to login'))
             }
             setAuthHeader(token)
+            dispatch(fetchProfile())
             dispatch(success(token))
 
         } catch (e) {

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 import { Container } from 'reactstrap'
 import { Home, Login, Signup } from './pages'
 import { Navigation, ProtectedRoute } from './components'
@@ -9,7 +9,9 @@ function App() {
     <div >
       <Navigation></Navigation>
       <Container>
-        <ProtectedRoute path="/" component={Home} exact />
+        <Switch>
+          <ProtectedRoute path="/" component={Home} exact />
+        </Switch>
         <Route path="/login" component={Login} exact />
         <Route path="/signup" component={Signup} exact />
       </Container>
