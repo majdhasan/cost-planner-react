@@ -1,13 +1,13 @@
 import React, { Component } from 'react'
-import { Button } from 'reactstrap';
 
+import { FloatingButton } from '../components'
 
 class Home extends Component {
     render() {
         return (
             <div>
                 <h1>Home</h1>
-                <Button color="danger">Danger</Button>
+                <FloatingButton onClick={() =>{console.log("button is working");}} content={<i className="fa fa-plus"></i>}></FloatingButton>
             </div>
         )
     }
