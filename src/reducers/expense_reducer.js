@@ -9,7 +9,7 @@ export default (state = INITIAL_STATE, action) => {
         case EXPENSE_SAVED:
             return { ...state, saved: true };
         case EXPENSE_RESET:
-            return { ...state, saved: false };
+            return INITIAL_STATE;
         default:
             return state;
     }

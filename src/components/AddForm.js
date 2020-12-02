@@ -5,8 +5,8 @@ import * as Yup from 'yup'
 import { Button, Modal, ModalHeader, ModalBody, FormGroup, Input, FormFeedback, Label, Alert } from 'reactstrap';
 import moment from 'moment'
 
-import { saveExpense, resetExpenseState } from '../actions/expense_actions'
-import { FloatingButton } from '../components'
+import { saveExpense, resetExpenseState, clearErrors } from '../actions/'
+import { FloatingButton, ErrorMessage } from '../components'
 
 
 
@@ -28,21 +28,30 @@ class AddFormComponent extends Component {
 
     _onSubmit(values, bag) {
         try {
+            this.bag = bag
             this.props.saveExpense(values);
             bag.setSubmitting(false)
-            bag.resetForm()
-            this.toggle()
-            this.bag = bag
+            if (this.props.errorMessage === null) {
+                this.toggle()
+                bag.resetForm()
+            } else {
+            }
+
         } catch (e) {
             console.log(e);
         }
     }
 
     componentDidUpdate() {
-        const { saved } = this.props;
+        const { saved, errorMessage } = this.props;
         if (saved) {
             setTimeout(() => {
                 this.props.resetExpenseState()
+            }, 3000);
+        }
+        if (errorMessage) {
+            setTimeout(() => {
+                this.props.clearErrors()
             }, 3000);
         }
     }
@@ -50,14 +59,15 @@ class AddFormComponent extends Component {
 
     render() {
         const now = moment().format('YYYY-MM-DD')
-        console.log(now);
         return (
             <div>
-                {this.props.saved && <Alert color="success">This is a success alert — check it out! </Alert>}
+                {this.props.saved && <Alert color="success">Expense was successfully created!</Alert>}
+                <ErrorMessage />
                 <FloatingButton onClick={this.toggle} content={<i className="fa fa-plus"></i>}></FloatingButton>
                 <Modal isOpen={this.state.modal} toggle={this.toggle}>
                     <ModalHeader toggle={this.toggle}>Add Expense</ModalHeader>
                     <ModalBody>
+
                         <Formik>
                             <Formik
                                 initialValues={{ amount: 0, create: now, description: "" }}
@@ -116,15 +126,16 @@ class AddFormComponent extends Component {
                         </Formik>
                     </ModalBody>
                 </Modal>
-            </div>
+            </div >
         )
     }
 }
 
-const mapStateToProps = ({ expense }) => {
+const mapStateToProps = ({ expense, error }) => {
     return {
-        saved: expense.saved
+        saved: expense.saved,
+        errorMessage: error.message
     };
 };
-const AddForm = connect(mapStateToProps, { saveExpense, resetExpenseState })(AddFormComponent)
+const AddForm = connect(mapStateToProps, { saveExpense, resetExpenseState, clearErrors })(AddFormComponent)
 export { AddForm }
