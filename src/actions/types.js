@@ -13,6 +13,9 @@ export const SIGNUP_FAILED = "SIGNUP_FAILED";
 // ------------- Expense actions --------------
 export const EXPENSE_SAVED = "EXPENSE_SAVED";
 export const EXPENSE_RESET = "EXPENSE_RESET"
+export const EXPENSE_FETCHING = "EXPENSE_FETCHING"
+export const EXPENSE_FETCHED = "EXPENSE_FETCHED"
+export const EXPENSE_FETCHING_FAILED = "EXPENSE_FETCHING_FAILED"
 
 // -------------- Error actions ---------------
 export const ADD_ERROR = "ADD_ERROR"

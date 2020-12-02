@@ -5,7 +5,7 @@ import * as Yup from 'yup'
 import { Button, Modal, ModalHeader, ModalBody, FormGroup, Input, FormFeedback, Label, Alert } from 'reactstrap';
 import moment from 'moment'
 
-import { saveExpense, resetExpenseState, clearErrors } from '../actions/'
+import { saveExpense, resetExpenseState, clearErrors, fetchExpenses } from '../actions/'
 import { FloatingButton, ErrorMessage } from '../components'
 
 
@@ -34,9 +34,8 @@ class AddFormComponent extends Component {
             if (this.props.errorMessage === null) {
                 this.toggle()
                 bag.resetForm()
-            } else {
+                this.props.fetchExpenses();
             }
-
         } catch (e) {
             console.log(e);
         }
@@ -137,5 +136,5 @@ const mapStateToProps = ({ expense, error }) => {
         errorMessage: error.message
     };
 };
-const AddForm = connect(mapStateToProps, { saveExpense, resetExpenseState, clearErrors })(AddFormComponent)
+const AddForm = connect(mapStateToProps, { saveExpense, resetExpenseState, clearErrors, fetchExpenses })(AddFormComponent)
 export { AddForm }

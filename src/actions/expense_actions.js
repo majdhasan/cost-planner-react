@@ -1,5 +1,5 @@
-import { EXPENSE_SAVED, EXPENSE_RESET } from '../actions/types'
-import { apiAddExpense } from '../api/expense'
+import { EXPENSE_SAVED, EXPENSE_RESET, EXPENSE_FETCHING, EXPENSE_FETCHING_FAILED, EXPENSE_FETCHED } from '../actions/types'
+import { apiAddExpense, apiFetchExpenses } from '../api/expense'
 import { addErrorMessage, clearErrors } from './error_actions'
 
 
@@ -20,4 +20,16 @@ export const resetExpenseState = () => {
         dispatch({ type: EXPENSE_RESET });
     }
 
+}
+export const fetchExpenses = () => {
+    return async dispatch => {
+        try {
+            dispatch({ type: EXPENSE_FETCHING })
+            const { data: { results } } = await apiFetchExpenses();
+            dispatch({ type: EXPENSE_FETCHED, payload: results })
+        } catch (e) {
+            dispatch({ type: EXPENSE_FETCHING_FAILED })
+            dispatch(addErrorMessage(e))
+        }
+    }
 }
