@@ -27,14 +27,15 @@ class AddFormComponent extends Component {
     }
 
     _onSubmit(values, bag) {
+        const { saveExpense, fetchExpenses, errorMessage } = this.props
         try {
             this.bag = bag
-            this.props.saveExpense(values);
+            saveExpense(values);
             bag.setSubmitting(false)
-            if (this.props.errorMessage === null) {
+            if (errorMessage === null) {
                 this.toggle()
                 bag.resetForm()
-                this.props.fetchExpenses();
+                fetchExpenses();
             }
         } catch (e) {
             console.log(e);
@@ -42,15 +43,16 @@ class AddFormComponent extends Component {
     }
 
     componentDidUpdate() {
-        const { saved, errorMessage } = this.props;
+        const { saved, errorMessage, resetExpenseState, clearErrors, fetchExpenses } = this.props;
         if (saved) {
+            fetchExpenses()
             setTimeout(() => {
-                this.props.resetExpenseState()
+                resetExpenseState()
             }, 3000);
         }
         if (errorMessage) {
             setTimeout(() => {
-                this.props.clearErrors()
+                clearErrors()
             }, 3000);
         }
     }
@@ -60,7 +62,6 @@ class AddFormComponent extends Component {
         const now = moment().format('YYYY-MM-DD')
         return (
             <div>
-                {this.props.saved && <Alert color="success">Expense was successfully created!</Alert>}
                 <ErrorMessage />
                 <FloatingButton onClick={this.toggle} content={<i className="fa fa-plus"></i>}></FloatingButton>
                 <Modal isOpen={this.state.modal} toggle={this.toggle}>
@@ -69,11 +70,11 @@ class AddFormComponent extends Component {
 
                         <Formik>
                             <Formik
-                                initialValues={{ amount: 0, create: now, description: "" }}
+                                initialValues={{ amount: 0, date: now, description: "" }}
                                 onSubmit={this._onSubmit.bind(this)}
                                 validationSchema={Yup.object().shape({
                                     amount: Yup.number().min(1).required(),
-                                    create: Yup.date().required()
+                                    date: Yup.date().required()
                                 })}
                                 render={({ handleChange, handleSubmit, handleBlur, values, isValid, isSubmitting, errors, touched }) => (
                                     <div>
@@ -104,17 +105,17 @@ class AddFormComponent extends Component {
                                             {(errors.amount && touched.amount) && <FormFeedback>{errors.amount}</FormFeedback>}
                                         </FormGroup>
                                         <FormGroup>
-                                            <Label for="create">Date</Label>
+                                            <Label for="date">Date</Label>
                                             <Input
-                                                invalid={errors.create && touched.create}
-                                                name="create"
-                                                value={values.create}
+                                                invalid={errors.date && touched.date}
+                                                name="date"
+                                                value={values.date}
                                                 type="date"
                                                 onChange={handleChange}
                                                 onBlur={handleBlur}
                                                 placeholder="Date"
                                             />
-                                            {(errors.create && touched.create) && <FormFeedback>{errors.create}</FormFeedback>}
+                                            {(errors.date && touched.date) && <FormFeedback>{errors.date}</FormFeedback>}
                                         </FormGroup>
                                         <Button onClick={handleSubmit} color="primary"
                                             disabled={!isValid || isSubmitting}

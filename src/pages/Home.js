@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { FloatingButton, AddForm } from '../components'
+import { FloatingButton, AddForm, ExpenseList } from '../components'
 
 import { fetchExpenses } from '../actions'
+
 
 
 class HomeComponent extends Component {
@@ -30,12 +31,7 @@ class HomeComponent extends Component {
             <div>
                 <h3 style={{ marginTop: 30 }} >Expenses</h3>
                 <hr />
-                {expenses &&
-                    expenses.map(expense => {
-                        return (
-                            <div>{expense.amount} </div>
-                        )
-                    })}
+                <ExpenseList />
                 <AddForm />
             </div>
         )
