@@ -21,11 +21,11 @@ export const resetExpenseState = () => {
     }
 
 }
-export const fetchExpenses = () => {
+export const fetchExpenses = (month = 12) => {
     return async dispatch => {
         try {
             dispatch({ type: EXPENSE_FETCHING })
-            const { data: { results } } = await apiFetchExpenses();
+            const { data: { results } } = await apiFetchExpenses(month);
             dispatch({ type: EXPENSE_FETCHED, payload: results })
         } catch (e) {
             dispatch({ type: EXPENSE_FETCHING_FAILED })

@@ -1,11 +1,8 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { FloatingButton, AddForm, ExpenseList } from '../components'
+import { AddForm, ExpenseList, MonthSelector } from '../components'
 
 import { fetchExpenses } from '../actions'
-
-
-
 class HomeComponent extends Component {
 
 
@@ -14,21 +11,11 @@ class HomeComponent extends Component {
         fetchExpenses()
     }
 
-    _renderExpenses() {
-        const { expenses } = this.props
-        console.log(expenses);
-        expenses.map(expense => {
-            return (
-                <div>HII </div>
-            )
-        })
-    }
-
-
     render() {
-        const { expenses } = this.props
+
         return (
             <div>
+                <MonthSelector selected={new Date().getMonth()} />
                 <h3 style={{ marginTop: 30 }} >Expenses</h3>
                 <hr />
                 <ExpenseList />

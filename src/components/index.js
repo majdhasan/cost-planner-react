@@ -6,3 +6,4 @@ export * from "./ErrorMessage"
 export * from './ExpenseList'
 export * from './Spinner'
 export * from './ExpenseElement'
+export * from './MonthSelector'
